@@ -45,30 +45,15 @@ done: cleanup delete
 
 service:
 	kubectl apply -f ./create-service/service.yaml
-	@sleep 15s
-	@echo ''
-	kubectl get deployments
 
-	@echo ''
-	@echo ''
- 
+traffic:
 	@./bin/greeter.sh
-
-	@echo ''
-	@echo 'sleeping for 65 seconds'
-
-	@sleep 65s
-
-	kubectl get deployments
 
 scaler:
 	kubectl apply -f ./autoscaler/
-	
-	@echo ''
-	@sleep 10s
 
-	kubectl get deployments
-	
+
+loadtest:
 	@echo ''
 	@echo 'Running mini-loadtest:'
 	hey -c 50 -z 10s "$(shell kn service describe prime-generator -o url)/?sleep=3&upto=10000&memload=100"
